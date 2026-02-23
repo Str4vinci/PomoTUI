@@ -60,4 +60,4 @@ You can also control the timer directly from the Task Queue by typing these comm
 
 ## Configuration
 
-Settings are accessible inside the app (press `s`) and are applied instantly to the current session. You can manage durations, auto-transitions, session logging toggle, and the **Notification Volume**. The task queue explicitly runs in-memory and resets automatically when the application is restarted.
+Settings are accessible inside the app (press `s`) and are applied instantly to the current session. You can manage durations, auto-transitions, session logging toggles, **Notification Volume**, and **Progress Bar Fill Direction** (whether the bar fills up as time elapses or drains down as time runs out). The task queue explicitly runs in-memory and resets automatically when the application is restarted.
