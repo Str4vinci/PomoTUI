@@ -1,0 +1,59 @@
+Screen {
+    layout: horizontal;
+}
+
+#left-panel {
+    width: 60%;
+    height: 100%;
+    border-right: vkey $primary;
+    align: center middle;
+    padding: 2;
+}
+
+#right-panel {
+    width: 40%;
+    height: 100%;
+    padding: 1 2;
+}
+
+TimerWidget {
+    width: 100%;
+    height: auto;
+    content-align: center middle;
+    text-align: center;
+}
+
+TaskQueueWidget {
+    height: 100%;
+    width: 100%;
+}
+
+#queue-title {
+    text-align: center;
+    text-style: bold;
+    margin-bottom: 1;
+}
+
+#task-list-container {
+    height: 1fr;
+    border: solid $primary;
+    margin-bottom: 1;
+}
+
+TaskItem {
+    padding: 0 1;
+}
+
+TaskItem.done {
+    opacity: 0.6;
+}
+
+/* Minimal mode overrides */
+.minimal #left-panel {
+    width: 100%;
+    border-right: none;
+}
+
+.minimal #right-panel {
+    display: none;
+}
