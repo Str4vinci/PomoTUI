@@ -40,8 +40,7 @@ class TimerWidget(Vertical):
         
     def compose(self) -> ComposeResult:
         yield Label(id="clock-label")
-        with Center():
-            yield ProgressBar(total=100, show_eta=False, show_percentage=False, id="progress-bar")
+        yield ProgressBar(total=100, show_eta=False, show_percentage=False, id="progress-bar")
 
     def tick(self) -> None:
         """Update the time remaining."""
@@ -80,7 +79,7 @@ class TimerWidget(Vertical):
             total_time = config.long_break_min * 60.0
             
         if total_time > 0:
-            progress_percent = ((total_time - time_remaining) / total_time) * 100
+            progress_percent = (time_remaining / total_time) * 100
 
         try:
             clock = self.query_one("#clock-label", Label)
