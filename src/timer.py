@@ -1,5 +1,5 @@
 from textual.widgets import Static, Label, ProgressBar
-from textual.containers import Vertical
+from textual.containers import Vertical, Center
 from textual.app import ComposeResult
 from textual.reactive import reactive
 from textual.message import Message
@@ -40,7 +40,8 @@ class TimerWidget(Vertical):
         
     def compose(self) -> ComposeResult:
         yield Label(id="clock-label")
-        yield ProgressBar(total=100, show_eta=False, id="progress-bar")
+        with Center():
+            yield ProgressBar(total=100, show_eta=False, id="progress-bar")
 
     def tick(self) -> None:
         """Update the time remaining."""
