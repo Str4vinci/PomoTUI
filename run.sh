@@ -1,3 +1,3 @@
 #!/bin/bash
 cd "$(dirname "$0")"
-PYTHONPATH=. uv run textual run src/app.py
+uv run python -m src.app
