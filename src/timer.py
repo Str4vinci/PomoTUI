@@ -40,8 +40,8 @@ class TimerWidget(Vertical):
         
     def compose(self) -> ComposeResult:
         yield Label(id="clock-label")
-        with Center(id="progress-bar-container"):
-            yield ProgressBar(total=100, show_eta=False, id="progress-bar")
+        with Center():
+            yield ProgressBar(total=100, show_eta=False, show_percentage=False, id="progress-bar")
 
     def tick(self) -> None:
         """Update the time remaining."""
@@ -72,9 +72,19 @@ class TimerWidget(Vertical):
         state_name, state_emoji, state_class = self.current_state.value
         status = "⏱️ Running" if is_running else "⏸️ Paused"
         
+        progress_percent = 0.0
+        total_time = config.pomodoro_min * 60.0
+        if self.current_state == TimerState.SHORT_BREAK:
+            total_time = config.short_break_min * 60.0
+        elif self.current_state == TimerState.LONG_BREAK:
+            total_time = config.long_break_min * 60.0
+            
+        if total_time > 0:
+            progress_percent = ((total_time - time_remaining) / total_time) * 100
+
         try:
             clock = self.query_one("#clock-label", Label)
-            clock.update(f"[bold]{state_emoji} {state_name}[/bold] - {status}\n\n[bold text-title]{minutes:02d}:{seconds:02d}[/bold text-title]")
+            clock.update(f"[bold]{state_emoji} {state_name}[/bold] - {status}\n\n[bold text-title]{minutes:02d}:{seconds:02d}[/bold text-title]  ({int(progress_percent)}%)")
             
             # Remove all possible state classes and add the current one
             clock.remove_class("pomodoro", "short-break", "long-break")
@@ -84,16 +94,7 @@ class TimerWidget(Vertical):
             
         try:
             pb = self.query_one("#progress-bar", ProgressBar)
-            total_time = config.pomodoro_min * 60.0
-            if self.current_state == TimerState.SHORT_BREAK:
-                total_time = config.short_break_min * 60.0
-            elif self.current_state == TimerState.LONG_BREAK:
-                total_time = config.long_break_min * 60.0
-                
-            if total_time > 0:
-                # 0 to 100% as time goes by
-                progress_percent = ((total_time - time_remaining) / total_time) * 100
-                pb.update(progress=progress_percent)
+            pb.update(progress=progress_percent)
         except Exception:
             pass
 

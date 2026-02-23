@@ -25,13 +25,18 @@ uv sync
 
 ## Usage
 
-You can run the application directly via the terminal by simply typing:
+You can run the application directly via the terminal by setting up a global command:
+
+```bash
+mkdir -p ~/.local/bin
+ln -s $(pwd)/run.sh ~/.local/bin/pomotui
+```
+
+Then simply type:
 
 ```bash
 pomotui
 ```
-
-*(This runs a symlinked wrapper script that handles the local virtual environment and executes the Textual app.)*
 
 ### Keybindings
 
