@@ -123,6 +123,10 @@ class TimerWidget(Vertical):
         elif self.current_state == TimerState.LONG_BREAK:
             self.time_remaining = config.long_break_min * 60.0
             
+    def skip_timer(self) -> None:
+        self.time_remaining = 0
+        self.handle_timer_finish()
+            
     def handle_timer_finish(self) -> None:
         self.is_running = False
         self.update_timer.pause()

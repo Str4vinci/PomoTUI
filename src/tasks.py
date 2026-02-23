@@ -38,7 +38,7 @@ class TaskQueueWidget(Static):
             yield Label("Session Tasks", id="queue-title")
             with VerticalScroll(id="task-list-container"):
                 yield ListView(id="task-list")
-            yield Input(placeholder="Add a task or type /start, /pause, /stop...", id="task-input")
+            yield Input(placeholder="Add a task or type /start, /pause, /stop, /skip...", id="task-input")
             
     def on_input_submitted(self, event: Input.Submitted) -> None:
         """Add a new task when the user presses Enter, or process slash commands."""

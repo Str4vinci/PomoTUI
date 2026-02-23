@@ -22,7 +22,8 @@ class PomodoroApp(App):
     BINDINGS = [
         Binding("q", "quit", "Quit"),
         Binding("space", "toggle_timer", "Pause/Resume"),
-        Binding("m", "toggle_layout", "Toggle Minimal Mode"),
+        Binding("n", "skip_timer", "Skip"),
+        Binding("m", "toggle_layout", "Toggle Layout"),
         Binding("s", "open_settings", "Settings"),
         Binding("t", "toggle_theme", "Toggle Theme"),
     ]
@@ -80,8 +81,15 @@ class PomodoroApp(App):
             timer_widget.pause_timer()
         elif cmd == "/stop":
             timer_widget.stop_timer()
+        elif cmd == "/skip":
+            timer_widget.skip_timer()
         else:
             self.notify(f"Unknown command: {cmd}", severity="warning")
+
+    def action_skip_timer(self) -> None:
+        """Skip the current timer to the next state."""
+        timer_widget = self.query_one("#timer", TimerWidget)
+        timer_widget.skip_timer()
 
     def action_toggle_timer(self) -> None:
         """Pause or resume the timer."""

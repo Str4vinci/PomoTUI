@@ -15,13 +15,12 @@ A feature-rich Pomodoro Terminal User Interface (TUI) built with Python and the 
 
 ## Installation
 
-This project uses `uv` for dependency management. To set it up manually:
+This project uses `uv` for modern, fast Python dependency management. To set it up:
 
 ```bash
-git clone <repository_url>
-cd pomodoro_tui
-uv venv
-uv pip install textual textual-dev pydantic
+git clone https://github.com/Str4vinci/PomoTUI.git
+cd PomoTUI
+uv sync
 ```
 
 ## Usage

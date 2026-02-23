@@ -1,0 +1,10 @@
+[project]
+name = "pomodoro-tui"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.13"
+dependencies = [
+    "pydantic>=2.12.5",
+    "textual>=8.0.0",
+    "textual-dev>=1.8.0",
+]
