@@ -9,5 +9,6 @@ class TimerSettings(BaseModel):
     auto_start_pomodoros: bool = Field(default=False, description="Automatically start pomodoro timers after a break")
     session_logs: bool = Field(default=False, description="Log pomodoro completions")
     notification_volume: int = Field(default=50, description="Volume of the notification sound (0-100)")
+    progress_bar_fills_up: bool = Field(default=True, description="Progress bar fills up (elapsed) vs drains down (remaining)")
 
 config = TimerSettings()

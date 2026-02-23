@@ -68,6 +68,8 @@ class SettingsScreen(ModalScreen[bool]):
                 yield Checkbox("Auto-start Pomodoros", value=config.auto_start_pomodoros, id="auto-pom")
             with Horizontal(classes="setting-row"):
                 yield Checkbox("Enable Session Logs", value=config.session_logs, id="session-logs")
+            with Horizontal(classes="setting-row"):
+                yield Checkbox("Progress Bar Fills Up (elapsed)", value=config.progress_bar_fills_up, id="pb-fills-up")
 
             with Horizontal(id="buttons"):
                 yield Button("Cancel", id="cancel", variant="error")
@@ -88,6 +90,7 @@ class SettingsScreen(ModalScreen[bool]):
                 config.auto_start_breaks = self.query_one("#auto-breaks", Checkbox).value
                 config.auto_start_pomodoros = self.query_one("#auto-pom", Checkbox).value
                 config.session_logs = self.query_one("#session-logs", Checkbox).value
+                config.progress_bar_fills_up = self.query_one("#pb-fills-up", Checkbox).value
                 
                 self.dismiss(True)
             except ValueError:
