@@ -61,22 +61,3 @@ You can also control the timer directly from the Task Queue by typing these comm
 ## Configuration
 
 Settings are accessible inside the app (press `s`) and are applied instantly to the current session. You can manage durations, auto-transitions, session logging toggle, and the **Notification Volume**. The task queue explicitly runs in-memory and resets automatically when the application is restarted.
-
-## Safety and Portability 🛡️
-
-**Is this safe to download and use?**
-Yes. PomoTUI is 100% safe to use on any machine. It acts as an offline, standalone application:
-- It makes **no network requests** and collects zero telemetry or tracking data.
-- It leverages isolated virtual environments via `uv`, so it does not interfere with system-wide Python libraries.
-- The task queue uses pure machine memory (RAM) and securely discards task records when it closes.
-
-**Will this work on other Linux distros and computers?**
-Absolutely. Because it uses Python + `uv` to manage its own sandbox, it is highly portable across *any* Linux distribution (Ubuntu, Arch, Fedora, etc.). 
-For audio alerts and desktop notifications, the app executes the universal standard Linux tools under the hood:
-- `paplay`: Standard playback on any system using `pulseaudio` or `pipewire-pulse` (which covers 99% of modern distros).
-- `notify-send`: The `libnotify` standard for shooting toast popups to your desktop.
-
-**Does it work on all terminals?**
-Yes! PomoTUI is built utilizing the powerful `Textual` rendering engine, meaning it works flawlessly out-of-the-box on virtually any modern terminal emulator (like GNOME Terminal, Kitty, Alacritty, Konsole, Terminator, and standard TTYs). If your terminal supports colors and standard ANSI codes, this will run smoothly!
-
-If you ever want to run this on a different computer, you can safely `git clone` this repository onto it, run `uv sync`, and execute it the exact same way.
