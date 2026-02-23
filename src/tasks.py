@@ -22,6 +22,14 @@ class TaskItem(ListItem):
             label.update(f"[ ] {self.task_text}")
             self.classes = ""
 
+from textual.message import Message
+
+class SlashCommand(Message):
+    """Emitted when the user types a command starting with /"""
+    def __init__(self, command: str):
+        self.command = command
+        super().__init__()
+
 class TaskQueueWidget(Static):
     """A widget for managing session tasks."""
     
@@ -30,14 +38,22 @@ class TaskQueueWidget(Static):
             yield Label("Session Tasks", id="queue-title")
             with VerticalScroll(id="task-list-container"):
                 yield ListView(id="task-list")
-            yield Input(placeholder="Add a task...", id="task-input")
+            yield Input(placeholder="Add a task or type /start, /pause, /stop...", id="task-input")
             
     def on_input_submitted(self, event: Input.Submitted) -> None:
-        """Add a new task when the user presses Enter."""
-        if event.value.strip():
-            task_list = self.query_one("#task-list", ListView)
-            task_list.append(TaskItem(event.value.strip()))
+        """Add a new task when the user presses Enter, or process slash commands."""
+        text = event.value.strip()
+        if not text:
+            return
+            
+        if text.startswith("/"):
+            self.post_message(SlashCommand(text))
             event.input.value = ""
+            return
+            
+        task_list = self.query_one("#task-list", ListView)
+        task_list.append(TaskItem(text))
+        event.input.value = ""
             
     def on_list_view_selected(self, event: ListView.Selected) -> None:
         """Toggle task completion when selected."""

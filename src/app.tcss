@@ -19,8 +19,19 @@ Screen {
 TimerWidget {
     width: 100%;
     height: auto;
-    content-align: center middle;
+    align: center middle;
+}
+
+#clock-label {
+    width: 100%;
     text-align: center;
+    content-align: center middle;
+    margin-bottom: 1;
+}
+
+#progress-bar {
+    width: 80%;
+    margin: 0 auto;
 }
 
 TaskQueueWidget {

@@ -4,7 +4,7 @@ from textual.binding import Binding
 from .timer import TimerWidget
 from .models import config
 
-from .tasks import TaskQueueWidget
+from .tasks import TaskQueueWidget, SlashCommand
 from textual.containers import Vertical, Container
 
 from textual import on
@@ -16,6 +16,7 @@ from . import themes
 class PomodoroApp(App):
     """A Textual app to manage pomodoro sessions."""
     
+    TITLE = "PomoTUI"
     CSS_PATH = "app.tcss"
     
     BINDINGS = [
@@ -67,6 +68,20 @@ class PomodoroApp(App):
                     f.write(f"[{datetime.datetime.now().isoformat()}] Pomodoro completed.\n")
             except Exception as e:
                 self.notify(f"Could not log session: {e}", severity="error")
+
+    @on(SlashCommand)
+    def on_slash_command(self, event: SlashCommand) -> None:
+        cmd = event.command.lower()
+        timer_widget = self.query_one("#timer", TimerWidget)
+        
+        if cmd == "/start":
+            timer_widget.start_timer()
+        elif cmd == "/pause":
+            timer_widget.pause_timer()
+        elif cmd == "/stop":
+            timer_widget.stop_timer()
+        else:
+            self.notify(f"Unknown command: {cmd}", severity="warning")
 
     def action_toggle_timer(self) -> None:
         """Pause or resume the timer."""

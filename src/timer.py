@@ -1,4 +1,5 @@
-from textual.widgets import Static
+from textual.widgets import Static, Label, ProgressBar
+from textual.containers import Vertical
 from textual.app import ComposeResult
 from textual.reactive import reactive
 from textual.message import Message
@@ -17,7 +18,7 @@ class TimerFinished(Message):
         self.state = state
         super().__init__()
 
-class TimerWidget(Static):
+class TimerWidget(Vertical):
     """A widget to display and manage the timer."""
 
     time_remaining = reactive(config.pomodoro_min * 60.0)
@@ -34,6 +35,12 @@ class TimerWidget(Static):
         """Called when widget is added to app. Update timer every 0.1s."""
         self.update_timer = self.set_interval(0.1, self.tick)
         self.update_timer.pause() # start paused
+        # Initial updates
+        self.watch_time_remaining(self.time_remaining)
+        
+    def compose(self) -> ComposeResult:
+        yield Label(id="clock-label")
+        yield ProgressBar(total=100, show_eta=False, id="progress-bar")
 
     def tick(self) -> None:
         """Update the time remaining."""
@@ -53,28 +60,63 @@ class TimerWidget(Static):
 
     def watch_time_remaining(self, time_remaining: float) -> None:
         """Called when time_remaining changes."""
-        minutes, seconds = divmod(int(time_remaining), 60)
-        state_str = self.current_state.value
-        status = "⏱️ Running" if self.is_running else "⏸️ Paused"
-        
-        self.update(f"[{state_str}] - {status}\n\n[bold]{minutes:02d}:{seconds:02d}[/bold]")
+        self._update_display(time_remaining, self.is_running)
 
     def watch_is_running(self, is_running: bool) -> None:
         """Called when is_running changes to update UI."""
-        # This will trigger an update due to time_remaining but we force it here
-        minutes, seconds = divmod(int(self.time_remaining), 60)
+        self._update_display(self.time_remaining, is_running)
+        
+    def _update_display(self, time_remaining: float, is_running: bool) -> None:
+        minutes, seconds = divmod(int(time_remaining), 60)
         state_str = self.current_state.value
         status = "⏱️ Running" if is_running else "⏸️ Paused"
-        self.update(f"[{state_str}] - {status}\n\n[bold]{minutes:02d}:{seconds:02d}[/bold]")
+        
+        try:
+            clock = self.query_one("#clock-label", Label)
+            clock.update(f"[bold]{state_str}[/bold] - {status}\n\n[bold text-title]{minutes:02d}:{seconds:02d}[/bold text-title]")
+        except Exception:
+            pass
+            
+        try:
+            pb = self.query_one("#progress-bar", ProgressBar)
+            total_time = config.pomodoro_min * 60.0
+            if self.current_state == TimerState.SHORT_BREAK:
+                total_time = config.short_break_min * 60.0
+            elif self.current_state == TimerState.LONG_BREAK:
+                total_time = config.long_break_min * 60.0
+                
+            if total_time > 0:
+                # 0 to 100% as time goes by
+                progress_percent = ((total_time - time_remaining) / total_time) * 100
+                pb.update(progress=progress_percent)
+        except Exception:
+            pass
 
     def toggle_pause(self) -> None:
         if self.is_running:
-            self.is_running = False
-            self.update_timer.pause()
+            self.pause_timer()
         else:
+            self.start_timer()
+            
+    def start_timer(self) -> None:
+        if not self.is_running:
             self.is_running = True
             self._last_tick = time.monotonic()
             self.update_timer.resume()
+            
+    def pause_timer(self) -> None:
+        if self.is_running:
+            self.is_running = False
+            self.update_timer.pause()
+            
+    def stop_timer(self) -> None:
+        self.pause_timer()
+        if self.current_state == TimerState.POMODORO:
+            self.time_remaining = config.pomodoro_min * 60.0
+        elif self.current_state == TimerState.SHORT_BREAK:
+            self.time_remaining = config.short_break_min * 60.0
+        elif self.current_state == TimerState.LONG_BREAK:
+            self.time_remaining = config.long_break_min * 60.0
             
     def handle_timer_finish(self) -> None:
         self.is_running = False
