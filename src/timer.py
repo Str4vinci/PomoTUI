@@ -40,7 +40,7 @@ class TimerWidget(Vertical):
         
     def compose(self) -> ComposeResult:
         yield Label(id="clock-label")
-        with Center():
+        with Center(id="progress-bar-container"):
             yield ProgressBar(total=100, show_eta=False, id="progress-bar")
 
     def tick(self) -> None:

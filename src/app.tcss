@@ -29,9 +29,14 @@ TimerWidget {
     margin-bottom: 1;
 }
 
+#progress-bar-container {
+    width: 100%;
+    height: auto;
+}
+
 #progress-bar {
-    width: 80%;
-    margin: 1;
+    width: 50;
+    margin-top: 1;
 }
 
 #clock-label.pomodoro {

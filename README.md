@@ -36,12 +36,20 @@ pomotui
 ### Keybindings
 
 - `space`: Pause or Resume the timer.
+- `n`: Skip the current timer and move to the next phase.
 - `m`: Toggle Minimal layout.
 - `s`: Open the Settings modal.
 - `t`: Cycle through color themes (Nord, Catppuccin, Dracula).
 - `q`: Quit the application.
 - `ctrl+p`: Open Textual's built-in command palette.
 
+### Slash Commands
+You can also control the timer directly from the Task Queue by typing these commands and pressing `<Enter>`:
+- `/start`
+- `/pause`
+- `/stop`
+- `/skip`
+
 ## Configuration
 
-Settings are accessible inside the app (press `s`) and are applied instantly to the current session. The task queue explicitly runs in-memory and resets automatically when the application is restarted.
+Settings are accessible inside the app (press `s`) and are applied instantly to the current session. You can manage durations, auto-transitions, session logging toggle, and the **Notification Volume**. The task queue explicitly runs in-memory and resets automatically when the application is restarted.

@@ -57,6 +57,10 @@ class SettingsScreen(ModalScreen[bool]):
                 yield Label("Long Break (min):", classes="setting-label")
                 yield Input(value=str(config.long_break_min), id="lb-min", classes="setting-input")
 
+            with Horizontal(classes="setting-row"):
+                yield Label("Volume (0-100):", classes="setting-label")
+                yield Input(value=str(config.notification_volume), id="vol-level", classes="setting-input")
+
             from textual.widgets import Checkbox
             with Horizontal(classes="setting-row"):
                 yield Checkbox("Auto-start Breaks", value=config.auto_start_breaks, id="auto-breaks")
@@ -75,6 +79,9 @@ class SettingsScreen(ModalScreen[bool]):
                 config.pomodoro_min = int(self.query_one("#pom-min", Input).value)
                 config.short_break_min = int(self.query_one("#sb-min", Input).value)
                 config.long_break_min = int(self.query_one("#lb-min", Input).value)
+                
+                vol = int(self.query_one("#vol-level", Input).value)
+                config.notification_volume = max(0, min(100, vol))
                 
                 # Checkboxes
                 from textual.widgets import Checkbox
