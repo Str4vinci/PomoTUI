@@ -8,9 +8,9 @@ from enum import Enum
 from .models import config
 
 class TimerState(Enum):
-    POMODORO = "Pomodoro"
-    SHORT_BREAK = "Short Break"
-    LONG_BREAK = "Long Break"
+    POMODORO = ("Pomodoro", "🍅", "pomodoro")
+    SHORT_BREAK = ("Short Break", "☕", "short-break")
+    LONG_BREAK = ("Long Break", "🌴", "long-break")
 
 class TimerFinished(Message):
     """Emitted when a timer finishes"""
@@ -68,12 +68,16 @@ class TimerWidget(Vertical):
         
     def _update_display(self, time_remaining: float, is_running: bool) -> None:
         minutes, seconds = divmod(int(time_remaining), 60)
-        state_str = self.current_state.value
+        state_name, state_emoji, state_class = self.current_state.value
         status = "⏱️ Running" if is_running else "⏸️ Paused"
         
         try:
             clock = self.query_one("#clock-label", Label)
-            clock.update(f"[bold]{state_str}[/bold] - {status}\n\n[bold text-title]{minutes:02d}:{seconds:02d}[/bold text-title]")
+            clock.update(f"[bold]{state_emoji} {state_name}[/bold] - {status}\n\n[bold text-title]{minutes:02d}:{seconds:02d}[/bold text-title]")
+            
+            # Remove all possible state classes and add the current one
+            clock.remove_class("pomodoro", "short-break", "long-break")
+            clock.add_class(state_class)
         except Exception:
             pass
             

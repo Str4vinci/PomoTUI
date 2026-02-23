@@ -31,7 +31,19 @@ TimerWidget {
 
 #progress-bar {
     width: 80%;
-    margin: 0 auto;
+    margin: 1;
+}
+
+#clock-label.pomodoro {
+    color: $error;
+}
+
+#clock-label.short-break {
+    color: $primary;
+}
+
+#clock-label.long-break {
+    color: $secondary;
 }
 
 TaskQueueWidget {

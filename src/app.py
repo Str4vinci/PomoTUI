@@ -51,9 +51,9 @@ class PomodoroApp(App):
 
     @on(TimerFinished)
     async def on_timer_finished(self, event: TimerFinished) -> None:
-        state_str = event.state.value
+        state_name, _, _ = event.state.value
         title = "Timer Finished!"
-        msg = f"Your {state_str} session has ended."
+        msg = f"Your {state_name} session has ended."
         
         self.run_worker(play_sound(), exclusive=False)
         self.run_worker(send_desktop_notification(title, msg), exclusive=False)
